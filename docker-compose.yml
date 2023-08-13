@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  catalog_api:
+    container_name: catalog_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - api.env
+    networks:
+      - my_network
+    ports:
+      - 5003:5003
+    depends_on:
+      - catalog_db
+      
+  catalog_db:
+    container_name: catalog_db
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    networks:
+      - my_network
+    env_file:
+      - db.env
+      
+networks:
+  my_network:
+    driver: bridge
